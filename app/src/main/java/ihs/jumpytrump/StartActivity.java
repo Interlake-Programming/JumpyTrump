@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,39 +25,17 @@ public class StartActivity extends Activity {
     SurfaceHolder holder;
     SurfaceView surfaceRef;
     Bitmap trump;
+    GameManager gm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         trump = BitmapFactory.decodeResource(getResources(), R.drawable.trump);
+        trump = Bitmap.createScaledBitmap(trump, 200, 200, true);
         surfaceRef = (SurfaceView) findViewById(R.id.canvas);
         holder = surfaceRef.getHolder();
-        holder.addCallback(new SurfaceHolder.Callback(){
-
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                Canvas canvas = holder.lockCanvas();
-                Paint p = new Paint();
-                p.setColor(Color.BLUE);
-                if(canvas == null){
-                }
-                else{
-                    canvas.drawBitmap(trump, 0, 0, p);
-                    holder.unlockCanvasAndPost(canvas);
-                }
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-
-            }
-        });
+        gm = new GameManager(holder, this);
     }
 
     @Override
