@@ -36,6 +36,7 @@ public class StartActivity extends Activity {
         surfaceRef = (SurfaceView) findViewById(R.id.canvas);
         holder = surfaceRef.getHolder();
         gm = new GameManager(holder, this);
+        gm.startGame();
     }
 
     @Override
