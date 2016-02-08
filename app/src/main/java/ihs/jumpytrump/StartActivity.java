@@ -35,7 +35,7 @@ public class StartActivity extends Activity {
         trump = Bitmap.createScaledBitmap(trump, 200, 200, true);
         surfaceRef = (SurfaceView) findViewById(R.id.canvas);
         holder = surfaceRef.getHolder();
-        gm = new GameManager(holder, this);
+        gm = new GameManager(holder, surfaceRef, this);
         gm.startGame();
     }
 
