@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class GameManager {
 
-    volatile int status;
+    private volatile int status;
 
     private SurfaceView surface;
     private SurfaceHolder holder;
@@ -57,12 +57,12 @@ public class GameManager {
         surface.setOnTouchListener(new TouchListener());
     }
 
-    private class TouchListener implements View.OnTouchListener{
+    private class TouchListener implements View.OnTouchListener {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if(v == surface){
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
+            if (v == surface) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     jump();
                 }
             }
@@ -70,7 +70,7 @@ public class GameManager {
         }
     }
 
-    public void startGame(){
+    public void startGame() {
         status = 1;
         Thread g = new Thread(new Loop());
         time = System.currentTimeMillis();
@@ -78,6 +78,7 @@ public class GameManager {
     }
 
     private int pipeWidth = 500;
+
     public void render() {
         Canvas canvas = holder.lockCanvas();
         if (canvas == null) {
@@ -106,29 +107,26 @@ public class GameManager {
         }
     }
 
-    public void startAnimation(){
+    public void startAnimation() {
         try {
             Thread.sleep(500);
-        }
-        catch(InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for(int i = 3; i > 0; i--){
+        for (int i = 3; i > 0; i--) {
             Canvas canvas = holder.lockCanvas();
-            if(canvas == null){
+            if (canvas == null) {
                 //IDK WHAT TO DO HERE
-            }
-            else{
+            } else {
                 canvas.drawColor(Color.WHITE);
                 Paint paint = new Paint();
                 paint.setColor(Color.BLACK);
                 paint.setTextSize(100);
-                canvas.drawText(i + "", canvas.getWidth() / 2, canvas.getHeight()/2 , paint);
+                canvas.drawText(i + "", canvas.getWidth() / 2, canvas.getHeight() / 2, paint);
                 holder.unlockCanvasAndPost(canvas);
                 try {
                     Thread.sleep(1500);
-                }
-                catch(InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                     Log.d("d", "WHO INTERRUPTED MY ETERNAL SLUMBER (LINE: " + 130 + "ish");
                 }
@@ -141,23 +139,39 @@ public class GameManager {
         @Override
         public void run() {
             startAnimation();
-            while(status > 0) {
-                    render();
-                    detectCollisions();
-                    update();
+            while (status > 0) {
+                render();
+                detectCollisions();
+                update();
             }
             endGame();
         }
     }
 
-    public void endGame(){
+    public void endGame() {
         //Can add animations here later
-        Intent intent = new Intent(c , LoseActivity.class);
+        Intent intent = new Intent(c, LoseActivity.class);
         intent.putExtra("score", -status);
         c.startActivity(intent);
     }
 
-    public void detectCollisions(){
+    public void detectCollisions() {
+        int pwidth = pipe.getWidth();
+        int pheight = pipe.getHeight();
+        int twidth = trump.getWidth();
+        int theight = trump.getHeight();
+        for(Pipe p : pipes){
+            if( Math.abs(p.x + pwidth / 2.0 - (tX + twidth / 2.0)) * 2 <= (pwidth + twidth)
+                    && Math.abs(p.y - pipeWidth - pheight / 2.0 - (tHeight + theight / 2.0)) * 2.0 <= (pheight + theight)){
+                status = -status;
+                break;
+            }
+            if( Math.abs(p.x + pwidth / 2.0 - (tX + twidth / 2.0)) * 2 <= (pwidth + twidth)
+                    && Math.abs(p.y + pheight / 2.0 - (tHeight + theight / 2.0)) * 2.0 <= (pheight + theight)){
+                status = -status;
+                break;
+            }
+        }
     }
 
 
@@ -167,35 +181,38 @@ public class GameManager {
     private int fallChange = 2;
     private int pipeMoveSpeed = 20;
     private int jumpSpeed = 40;
-    private void jump(){
-        if(tHeight > surface.getHeight()){
+
+    private void jump() {
+        if (tHeight > surface.getHeight()) {
             //Ded
         }
-        if(tHeight < 0){
+        if (tHeight < 0) {
             return;
         }
         fallAmount = -jumpSpeed;
     }
-    public void update(){
-        if(System.currentTimeMillis() - lastSpawnedTime > interval){
+
+    public void update() {
+        if (System.currentTimeMillis() - lastSpawnedTime > interval) {
             //Spawn pipe
             Pipe buffer = new Pipe();
             buffer.x = surface.getWidth();
             buffer.y = (int) (Math.random() * surface.getHeight() * 3.0 / 4.0 + surface.getHeight() / 8.0);
             pipes.add(buffer);
             lastSpawnedTime = System.currentTimeMillis();
+            status++;
         }
-        for(int i = 0; i < pipes.size(); i++){
+        for (int i = 0; i < pipes.size(); i++) {
             pipes.get(i).x -= pipeMoveSpeed;
-            if(pipes.get(i).x < -100){
+            if (pipes.get(i).x < -100) {
                 pipes.remove(i);
                 i--;
             }
         }
         tHeight += fallAmount;
         fallAmount += fallChange;
-        if(tHeight > surface.getHeight() + 10){
-            status = -1;
+        if (tHeight > surface.getHeight() + 10) {
+            status = -status;
         }
     }
 }
