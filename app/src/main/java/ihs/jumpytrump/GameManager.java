@@ -77,6 +77,7 @@ public class GameManager {
         g.start();
     }
 
+    private int pipeWidth = 500;
     public void render() {
         Canvas canvas = holder.lockCanvas();
         if (canvas == null) {
@@ -91,10 +92,47 @@ public class GameManager {
 
             //Draw pipes
             for (Pipe p : pipes) {
+
+                //Paint is for the future (currently unnecessary)
                 Paint paint = new Paint();
+
+                //Draw bottom pipe
                 canvas.drawBitmap(pipe, p.x, p.y, paint);
+
+                //Draw top pipe
+                canvas.drawBitmap(uPipe, p.x, (p.y - pipeWidth - uPipe.getHeight()), paint);
             }
             holder.unlockCanvasAndPost(canvas);
+        }
+    }
+
+    public void startAnimation(){
+        try {
+            Thread.sleep(1000);
+        }
+        catch(InterruptedException e){
+            e.printStackTrace();
+        }
+        for(int i = 3; i > 0; i--){
+            Canvas canvas = holder.lockCanvas();
+            if(canvas == null){
+                //IDK WHAT TO DO HERE
+            }
+            else{
+                canvas.drawColor(Color.WHITE);
+                Paint paint = new Paint();
+                paint.setColor(Color.BLACK);
+                paint.setTextSize(100);
+                canvas.drawText(i + "", canvas.getWidth() / 2, canvas.getHeight()/2 , paint);
+                holder.unlockCanvasAndPost(canvas);
+                try {
+                    Thread.sleep(2000);
+                }
+                catch(InterruptedException e){
+                    e.printStackTrace();
+                    Log.d("d", "WHO INTERRUPTED MY ETERNAL SLUMBER (LINE: " + 130 + "ish");
+                }
+            }
         }
     }
 
@@ -102,6 +140,7 @@ public class GameManager {
 
         @Override
         public void run() {
+            startAnimation();
             while(status > 0) {
                     render();
                     detectCollisions();
@@ -142,7 +181,7 @@ public class GameManager {
             //Spawn pipe
             Pipe buffer = new Pipe();
             buffer.x = surface.getWidth();
-            buffer.y = (int) (Math.random() * surface.getHeight() / 2.0 + surface.getHeight() / 4.0);
+            buffer.y = (int) (Math.random() * surface.getHeight() * 3.0 / 4.0 + surface.getHeight() / 8.0);
             pipes.add(buffer);
             lastSpawnedTime = System.currentTimeMillis();
         }
@@ -155,5 +194,8 @@ public class GameManager {
         }
         tHeight += fallAmount;
         fallAmount += fallChange;
+        if(tHeight > surface.getHeight() + 10){
+            status = -1;
+        }
     }
 }

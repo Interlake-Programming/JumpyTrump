@@ -16,5 +16,33 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        />
+        android:background="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="YOU LOST SCRUB"
+        android:id="@+id/loseText"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play Again"
+        android:id="@+id/playAgainButton"
+        android:layout_below="@+id/loseText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="46dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Start"
+        android:id="@+id/gotoStartButton"
+        android:layout_alignBottom="@+id/playAgainButton"
+        android:layout_alignRight="@+id/loseSurface"
+        android:layout_alignEnd="@+id/loseSurface" />
 </RelativeLayout>
