@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -51,12 +53,19 @@ public class GameManager {
         Matrix m = new Matrix();
         m.postRotate(180);
         uPipe = Bitmap.createBitmap(pipe, 0, 0, pipe.getWidth(), pipe.getHeight(), m, true);
+
+        surface.setOnTouchListener(new TouchListener());
     }
 
     private class TouchListener implements View.OnTouchListener{
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if(v == surface){
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    jump();
+                }
+            }
             return false;
         }
     }
@@ -82,7 +91,8 @@ public class GameManager {
 
             //Draw pipes
             for (Pipe p : pipes) {
-                canvas.drawBitmap(pipe, p.x, p.y, null);
+                Paint paint = new Paint();
+                canvas.drawBitmap(pipe, p.x, p.y, paint);
             }
             holder.unlockCanvasAndPost(canvas);
         }
@@ -114,13 +124,36 @@ public class GameManager {
 
     private long lastSpawnedTime = 0;
     private long interval = 1000;
+    private int fallAmount = 0;
+    private int fallChange = 2;
+    private int pipeMoveSpeed = 20;
+    private int jumpSpeed = 40;
+    private void jump(){
+        if(tHeight > surface.getHeight()){
+            //Ded
+        }
+        if(tHeight < 0){
+            return;
+        }
+        fallAmount = -jumpSpeed;
+    }
     public void update(){
         if(System.currentTimeMillis() - lastSpawnedTime > interval){
             //Spawn pipe
             Pipe buffer = new Pipe();
-            buffer.x = 100;
-            buffer.y = 20;
+            buffer.x = surface.getWidth();
+            buffer.y = (int) (Math.random() * surface.getHeight() / 2.0 + surface.getHeight() / 4.0);
+            pipes.add(buffer);
+            lastSpawnedTime = System.currentTimeMillis();
         }
-        tHeight--;
+        for(int i = 0; i < pipes.size(); i++){
+            pipes.get(i).x -= pipeMoveSpeed;
+            if(pipes.get(i).x < -100){
+                pipes.remove(i);
+                i--;
+            }
+        }
+        tHeight += fallAmount;
+        fallAmount += fallChange;
     }
 }
