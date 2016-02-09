@@ -7,7 +7,7 @@
     <SurfaceView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/canvas"
+        android:id="@+id/startCanvas"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

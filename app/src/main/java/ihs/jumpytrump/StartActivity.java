@@ -33,7 +33,7 @@ public class StartActivity extends Activity {
         setContentView(R.layout.activity_start);
         trump = BitmapFactory.decodeResource(getResources(), R.drawable.trump);
         trump = Bitmap.createScaledBitmap(trump, 200, 200, true);
-        surfaceRef = (SurfaceView) findViewById(R.id.canvas);
+        surfaceRef = (SurfaceView) findViewById(R.id.startCanvas);
         holder = surfaceRef.getHolder();
         gm = new GameManager(holder, surfaceRef, this);
         gm.startGame();
