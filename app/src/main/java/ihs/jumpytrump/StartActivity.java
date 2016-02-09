@@ -74,4 +74,10 @@ public class StartActivity extends Activity implements View.OnClickListener{
             startActivity(i);
         }
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        stopService(new Intent(this, SoundService.class));
+    }
 }
