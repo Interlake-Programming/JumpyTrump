@@ -9,5 +9,23 @@
         android:layout_height="fill_parent"
         android:id="@+id/startCanvas"
         android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Jumpy Trump"
+        android:id="@+id/titleText"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play Game!"
+        android:id="@+id/startGameButton"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

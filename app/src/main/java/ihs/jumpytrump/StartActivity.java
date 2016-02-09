@@ -1,6 +1,7 @@
 package ihs.jumpytrump;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,13 +20,14 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
-public class StartActivity extends Activity {
+public class StartActivity extends Activity implements View.OnClickListener{
 
-    SurfaceHolder holder;
-    SurfaceView surfaceRef;
-    Bitmap trump;
-    GameManager gm;
+    private SurfaceHolder holder;
+    private SurfaceView surfaceRef;
+    private Bitmap trump;
+    private Button startGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +37,9 @@ public class StartActivity extends Activity {
         trump = Bitmap.createScaledBitmap(trump, 200, 200, true);
         surfaceRef = (SurfaceView) findViewById(R.id.startCanvas);
         holder = surfaceRef.getHolder();
-        gm = new GameManager(holder, surfaceRef, this);
-        gm.startGame();
+        startGame = (Button) findViewById(R.id.startGameButton);
+
+        startGame.setOnClickListener(this);
     }
 
     @Override
@@ -59,5 +62,13 @@ public class StartActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(v == startGame){
+            Intent i = new Intent(this, GameActivity.class);
+            startActivity(i);
+        }
     }
 }

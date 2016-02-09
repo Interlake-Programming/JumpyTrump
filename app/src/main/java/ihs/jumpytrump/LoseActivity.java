@@ -18,6 +18,7 @@ public class LoseActivity extends Activity implements View.OnClickListener{
     private TextView tview;
     private SurfaceHolder holder;
     private Button playAgain;
+    private Button gotoStartButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +30,10 @@ public class LoseActivity extends Activity implements View.OnClickListener{
         holder = surface.getHolder();
         tview = (TextView) findViewById(R.id.loseText);
         playAgain = (Button) findViewById(R.id.playAgainButton);
+        gotoStartButton = (Button) findViewById(R.id.gotoStartButton);
 
         playAgain.setOnClickListener(this);
+        gotoStartButton.setOnClickListener(this);
 
         clear();
     }
@@ -51,8 +54,13 @@ public class LoseActivity extends Activity implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(v == playAgain){
+            Intent i = new Intent(this, GameActivity.class);
+            startActivity(i);
+        }
+        if(v == gotoStartButton){
             Intent i = new Intent(this, StartActivity.class);
             startActivity(i);
+
         }
     }
 }

@@ -108,7 +108,7 @@ public class GameManager {
 
     public void startAnimation(){
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         }
         catch(InterruptedException e){
             e.printStackTrace();
@@ -126,7 +126,7 @@ public class GameManager {
                 canvas.drawText(i + "", canvas.getWidth() / 2, canvas.getHeight()/2 , paint);
                 holder.unlockCanvasAndPost(canvas);
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(1500);
                 }
                 catch(InterruptedException e){
                     e.printStackTrace();
