@@ -40,6 +40,9 @@ public class StartActivity extends Activity implements View.OnClickListener{
         startGame = (Button) findViewById(R.id.startGameButton);
 
         startGame.setOnClickListener(this);
+
+        Intent music = new Intent(this, SoundService.class);
+        startService(music);
     }
 
     @Override

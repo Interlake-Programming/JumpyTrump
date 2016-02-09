@@ -125,7 +125,7 @@ public class GameManager {
                 canvas.drawText(i + "", canvas.getWidth() / 2, canvas.getHeight() / 2, paint);
                 holder.unlockCanvasAndPost(canvas);
                 try {
-                    Thread.sleep(1500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     Log.d("d", "WHO INTERRUPTED MY ETERNAL SLUMBER (LINE: " + 130 + "ish");
