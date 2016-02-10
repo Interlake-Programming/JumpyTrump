@@ -86,7 +86,7 @@ public class GameManager {
             //Not sure what to do here
         } else {
             //Clear canvas
-            canvas.drawColor(Color.BLACK);
+            canvas.drawColor(Color.WHITE);
             //Ideally instead of clearing the canvas, the background will be drawn here too
 
             //Draw trump face
@@ -104,12 +104,14 @@ public class GameManager {
                 //Draw top pipe
                 canvas.drawBitmap(uPipe, p.x, (p.y - pipeWidth - uPipe.getHeight()), paint);
             }
+
+            //Display score
+            Paint paint = new Paint();
+            paint.setColor(Color.RED);
+            paint.setTextSize(100);
+            canvas.drawText("Current Score:" + (status - 1), surface.getWidth() / 2, 0, paint);
             holder.unlockCanvasAndPost(canvas);
         }
-    }
-
-    private void renderScore(Canvas c){
-        c.drawText("Current Score:" + (status - 1), surface.getWidth() / 2, 0, null);
     }
 
     public void startAnimation() {
@@ -122,7 +124,7 @@ public class GameManager {
                 canvas.drawColor(Color.WHITE);
                 Paint paint = new Paint();
                 paint.setColor(Color.BLACK);
-                paint.setTextSize(100);
+                paint.setTextSize(300);
                 canvas.drawText(i + "", canvas.getWidth() / 2, canvas.getHeight() / 2, paint);
                 holder.unlockCanvasAndPost(canvas);
                 try {
