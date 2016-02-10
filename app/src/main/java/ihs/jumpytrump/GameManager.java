@@ -8,6 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -33,6 +37,13 @@ public class GameManager {
 
     private long time;
 
+    private MediaPlayer gameSound;
+
+    private SoundPool sp;
+    private int coinSound;
+    private int jumpSound;
+    private int lifeSound;
+
     private class Pipe {
         public float x; //Refers to how far it is from left side of screen
         public float y; //Refers to how high the lower end is from top
@@ -56,6 +67,16 @@ public class GameManager {
         uPipe = Bitmap.createBitmap(pipe, 0, 0, pipe.getWidth(), pipe.getHeight(), m, true);
 
         surface.setOnTouchListener(new TouchListener());
+
+        sp = new SoundPool(50, AudioManager.STREAM_MUSIC, 0);
+        coinSound = sp.load(c, R.raw.mariocoin, 1);
+        jumpSound = sp.load(c, R.raw.mariojump, 1);
+        lifeSound = sp.load(c, R.raw.mariolife, 1);
+
+        gameSound = MediaPlayer.create(c, R.raw.mariotheme);
+        gameSound.setVolume(100, 100);
+        gameSound.setLooping(true);
+        gameSound.start();
     }
 
     private class TouchListener implements View.OnTouchListener {
@@ -109,7 +130,7 @@ public class GameManager {
             Paint paint = new Paint();
             paint.setColor(Color.RED);
             paint.setTextSize(100);
-            canvas.drawText("Current Score:" + (status - 1), surface.getWidth() / 2, 0, paint);
+            canvas.drawText("Current Score:" + (status - 1), surface.getWidth() / 2, 100, paint);
             holder.unlockCanvasAndPost(canvas);
         }
     }
@@ -152,6 +173,10 @@ public class GameManager {
     }
 
     public void endGame() {
+        //Clean up the sounds
+        gameSound.stop();
+        gameSound.release();
+
         //Can add animations here later
         Intent intent = new Intent(c, LoseActivity.class);
         intent.putExtra("score", -status);
@@ -193,6 +218,7 @@ public class GameManager {
             return;
         }
         fallAmount = -jumpSpeed;
+        sp.play(jumpSound, 100, 100, 1, 1, 1);
     }
 
     public void update() {
@@ -208,6 +234,12 @@ public class GameManager {
             pipes.get(i).x -= pipeMoveSpeed;
             if(!pipes.get(i).passed && pipes.get(i).x < tX){
                 status++;
+                if(status % 7 == 0){
+                    sp.play(jumpSound, 100, 100, 1, 1, 1);
+                }
+                else{
+                    sp.play(jumpSound, 100, 100, 1, 1, 1);
+                }
                 pipes.get(i).passed = true;
             }
             if (pipes.get(i).x < -100) {
