@@ -35,7 +35,7 @@ public class LoseActivity extends Activity implements View.OnClickListener{
         playAgain.setOnClickListener(this);
         gotoStartButton.setOnClickListener(this);
 
-        tview.append(" WITH ONLY " + getIntent().getIntExtra("score", 0) + " POINTS");
+        tview.append(" WITH ONLY " + (getIntent().getIntExtra("score", 1) - 1) + " POINTS");
         clear();
     }
 

@@ -36,6 +36,7 @@ public class GameManager {
     private class Pipe {
         public float x; //Refers to how far it is from left side of screen
         public float y; //Refers to how high the lower end is from top
+        public boolean passed = false;
     }
 
     public GameManager(SurfaceHolder holder, SurfaceView view, Context c) {
@@ -107,16 +108,16 @@ public class GameManager {
         }
     }
 
+    private void renderScore(Canvas c){
+        c.drawText("Current Score:" + (status - 1), surface.getWidth() / 2, 0, null);
+    }
+
     public void startAnimation() {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         for (int i = 3; i > 0; i--) {
             Canvas canvas = holder.lockCanvas();
             if (canvas == null) {
-                //IDK WHAT TO DO HERE
+                i++;
+                continue;
             } else {
                 canvas.drawColor(Color.WHITE);
                 Paint paint = new Paint();
@@ -200,10 +201,13 @@ public class GameManager {
             buffer.y = (int) (Math.random() * surface.getHeight() * 3.0 / 4.0 + surface.getHeight() / 8.0);
             pipes.add(buffer);
             lastSpawnedTime = System.currentTimeMillis();
-            status++;
         }
         for (int i = 0; i < pipes.size(); i++) {
             pipes.get(i).x -= pipeMoveSpeed;
+            if(!pipes.get(i).passed && pipes.get(i).x < tX){
+                status++;
+                pipes.get(i).passed = true;
+            }
             if (pipes.get(i).x < -100) {
                 pipes.remove(i);
                 i--;
