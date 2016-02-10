@@ -218,7 +218,7 @@ public class GameManager {
             return;
         }
         fallAmount = -jumpSpeed;
-        sp.play(jumpSound, 100, 100, 1, 1, 1);
+        sp.play(jumpSound, 0.1f, 0.1f, 1, 0, 1);
     }
 
     public void update() {
@@ -235,10 +235,10 @@ public class GameManager {
             if(!pipes.get(i).passed && pipes.get(i).x < tX){
                 status++;
                 if(status % 7 == 0){
-                    sp.play(jumpSound, 100, 100, 1, 1, 1);
+                    sp.play( lifeSound, 1, 1, 1, 0, 1);
                 }
                 else{
-                    sp.play(jumpSound, 100, 100, 1, 1, 1);
+                    sp.play( coinSound, 1, 1, 1, 0, 1);
                 }
                 pipes.get(i).passed = true;
             }
